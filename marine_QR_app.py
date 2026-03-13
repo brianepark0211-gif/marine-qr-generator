@@ -8,32 +8,30 @@ import streamlit as st
 st.set_page_config(page_title="Marine QR Generator", page_icon="🪖", layout="centered")
 
 # ---------- Helper: background image ----------
-def add_bg_from_local(image_file: str) -> None:
+def add_bg_from_local(image_file):
     with open(image_file, "rb") as f:
         encoded = base64.b64encode(f.read()).decode()
 
-    st.markdown(
-        f"""
-        <style>
-        .stApp {{
-            background-image: linear-gradient(rgba(120, 0, 0, 0.55), rgba(120, 0, 0, 0.55)),
-                              url("data:image/webp;base64,{encoded}");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-        }}
+    css = f"""
+    <style>
+    .stApp {{
+        background-image: url("data:image/webp;base64,{encoded}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }}
 
-        .block-container {{
-            background-color: rgba(255, 255, 255, 0.88);
-            padding: 2rem;
-            border-radius: 16px;
-            margin-top: 2rem;
-        }}
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
+    .block-container {{
+        background-color: rgba(255,255,255,0.88);
+        padding: 2rem;
+        border-radius: 16px;
+        margin-top: 2rem;
+    }}
+    </style>
+    """
+
+    st.markdown(css, unsafe_allow_html=True)
 
 # Use your uploaded image file in the same repo/folder
 add_bg_from_local("Marine.webp")
@@ -82,4 +80,3 @@ if text:
         data=byte_im,
         file_name="marine_qr_code.png",
         mime="image/png"
-    )
