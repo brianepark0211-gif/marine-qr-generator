@@ -73,6 +73,7 @@ if allegiance.strip() != required_phrase:
 
 st.success("Allegiance authenticated. Oorah!")
 
+# ---------- URL input ----------
 text = st.text_input("Enter the URL or text to encode as QR Code:")
 
 if text:
