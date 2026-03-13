@@ -6,9 +6,8 @@ import streamlit as st
 
 st.set_page_config(page_title="Marine QR Generator", page_icon="🪖", layout="centered")
 
-def add_bg_from_local(image_file):
-    import base64
 
+def add_bg_from_local(image_file):
     with open(image_file, "rb") as f:
         encoded = base64.b64encode(f.read()).decode()
 
@@ -33,21 +32,15 @@ def add_bg_from_local(image_file):
         max-width: 900px;
     }}
 
-    /* Make all text readable */
     html, body, [class*="css"] {{
         color: black !important;
     }}
 
-    h1, h2, h3, h4, h5, h6 {{
-        color: black !important;
-    }}
-
-    label {{
+    h1, h2, h3, h4, h5, h6, label, p, div, span {{
         color: black !important;
     }}
     </style>
     """
-
     st.markdown(css, unsafe_allow_html=True)
 
 
@@ -60,7 +53,7 @@ with st.expander("App Description"):
     This app generates QR codes for URLs or text strings.
     You must first authenticate your allegiance before generating the code.
 
-    POC: Brian Park, your_email@nps.edu
+    POC: , your_email@nps.edu
     """)
 
 allegiance = st.text_input("Authenticate your allegiance first by typing Oorah!:")
@@ -73,18 +66,21 @@ if allegiance.strip() != required_phrase:
 
 st.success("Allegiance authenticated. Oorah!")
 
-# ---------- URL input ----------
 text = st.text_input("Enter the URL or text to encode as QR Code:")
 
 if text:
+    # Create QR image
     img = qrcode.make(text)
 
-    st.write(f"QR Code generated for: {text}")
-    st.image(img, caption="Generated QR Code")
-
+    # Convert once to PNG bytes
     buf = BytesIO()
     img.save(buf, format="PNG")
     byte_im = buf.getvalue()
+
+    st.write(f"QR Code generated for: {text}")
+
+    # Display bytes instead of the PIL/qrcode object
+    st.image(byte_im, caption="Generated QR Code")
 
     st.download_button(
         label="Download QR Code",
