@@ -7,6 +7,8 @@ import streamlit as st
 st.set_page_config(page_title="Marine QR Generator", page_icon="🪖", layout="centered")
 
 def add_bg_from_local(image_file):
+    import base64
+
     with open(image_file, "rb") as f:
         encoded = base64.b64encode(f.read()).decode()
 
@@ -15,7 +17,8 @@ def add_bg_from_local(image_file):
     css = f"""
     <style>
     .stApp {{
-        background-image: url("data:image/{file_ext};base64,{encoded}");
+        background-image: linear-gradient(rgba(255,255,255,0.75), rgba(255,255,255,0.75)),
+                          url("data:image/{file_ext};base64,{encoded}");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -27,10 +30,26 @@ def add_bg_from_local(image_file):
         padding: 2rem;
         border-radius: 16px;
         margin-top: 2rem;
+        max-width: 900px;
+    }}
+
+    /* Make all text readable */
+    html, body, [class*="css"] {{
+        color: black !important;
+    }}
+
+    h1, h2, h3, h4, h5, h6 {{
+        color: black !important;
+    }}
+
+    label {{
+        color: black !important;
     }}
     </style>
     """
+
     st.markdown(css, unsafe_allow_html=True)
+
 
 add_bg_from_local("Marine.webp")
 
